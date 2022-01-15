@@ -1,31 +1,37 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../../database/index')
-const Endereco = require('./Endereco');
+const sequelize = require('../index')
 
+class Produto extends Model{}
 
-class Cliente extends Model{}
-
-Cliente.init({
+Produto.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
     },
-    nomeCompleto:{
+    nome:{
         type: DataTypes.STRING,
         allowNull: false,
     },
-    email: {
+    imagem: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    cpf: {
+    descricao: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    dataDeNascimento: {
-        type: DataTypes.STRING,
+    peso: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
+    preco: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
+    quantidadeEmEstoque: {
+        type: DataTypes.INTEGER,
     }
 },
 {
@@ -34,8 +40,4 @@ Cliente.init({
     underscored: true
 });
 
-// Cliente.hasMany(Endereco, {
-//     foreignKey: 'clienteId'
-// });
-
-module.exports = Cliente;
+module.exports = Produto;
