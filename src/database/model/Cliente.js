@@ -34,8 +34,8 @@ Cliente.init({
     underscored: true
 });
 
-// Cliente.hasMany(Endereco, {
-//     foreignKey: 'clienteId'
-// });
-
+Cliente.hasMany(Endereco, {
+    foreignKey: 'clienteId',
+    as: 'endereco'
+})
 module.exports = Cliente;

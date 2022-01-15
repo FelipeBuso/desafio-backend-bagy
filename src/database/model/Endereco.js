@@ -16,6 +16,12 @@ Endereco.init({
         type: DataTypes.INTEGER,
         foreignKey: true,
         allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+            model: 'clientes',
+            key: 'id',
+            as: 'clienteId'
+        }
     },
     rua: {
         type: DataTypes.STRING,
@@ -52,9 +58,14 @@ Endereco.init({
 {
     sequelize,
     timestamps: false,
-    underscored: true
+    underscored: true    
 });
 
 // Endereco.belongsTo(Cliente);
+// Endereco.associations(
+//     Endereco.belongsTo(Cliente,
+//         { foreignKey: 'clienteId', as: 'cliente'}
+//     )
+// );
 
 module.exports = Endereco;

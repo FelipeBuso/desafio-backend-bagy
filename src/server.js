@@ -15,6 +15,7 @@ const typeDefs = gql`
         email: String!
         cpf: String!
         dataDeNascimento: String!,
+        endereco: [Endereco!]!
     }
 
     type Endereco {
@@ -84,7 +85,8 @@ const resolvers = {
     Query: {
         clientes: async () => await Cliente.findAll(),
 
-        cliente: async (_, { id }) => await Cliente.findByPk(id),
+        cliente: async (_, { id }) => await Cliente.findByPk(id, 
+            { include: {model: Endereco, as: 'endereco'} }),
 
         produtos: async () => await Produto.findAll(),
 
