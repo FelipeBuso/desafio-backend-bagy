@@ -5,11 +5,34 @@ const novoCliente = {
     dataDeNascimento: "01/01/2001",
 };
 
-const novoProduto = {
-    nome: "celular",
-    imagem:  "http://celular/cel.img",
-    descricao: "celular de teste",
-    peso: 0.68,
-    preco: 1100.99,
-    quantidadeEmEstoque: 10, 
-}
+const novoEndereco = {
+    clienteId: 1,
+    rua: "Rua undefined",
+    bairro: "Centro",
+    cidade: "Cidade",
+    estado: "Estado",
+    pais: "Pais",
+    cep: 12345678,
+    numero: 321,
+    complemento: "teste-comp"
+};
+
+const novoProduto = [
+    {
+        nome: "celular",
+        imagem:  "http://loja.com/api/cel.img",
+        descricao: "celular de teste",
+        peso: 0.68,
+        preco: 1100.99,
+        quantidadeEmEstoque: 10, 
+    },
+    {
+        nome: "tv",
+        imagem:  "http://loja.com/api/tv.img",
+        descricao: "tv de teste",
+        peso: 2.0,
+        preco: 2499.99,
+        quantidadeEmEstoque: 7, 
+    }
+
+]

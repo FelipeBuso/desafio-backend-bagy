@@ -1,6 +1,7 @@
 const { gql, ApolloServer } = require('apollo-server');
 const sequelize = require('./database/index');
 const Cliente = require('./database/model/Cliente');
+const Endereco = require('./database/model/Endereco');
 const Produto = require('./database/model/Produto');
 
 sequelize.sync().then(() => console.log('db está pronto'))
@@ -14,6 +15,19 @@ const typeDefs = gql`
         email: String!
         cpf: String!
         dataDeNascimento: String!,
+    }
+
+    type Endereco {
+        id: ID!
+        clienteId: Int!
+        rua: String!
+        bairro: String!
+        cidade: String!
+        estado: String!
+        pais: String!
+        cep: Int!
+        numero: Int!
+        complemento: String
     }
 
     type Produto {
@@ -32,6 +46,7 @@ const typeDefs = gql`
         cliente(id: ID!): Cliente
         produtos: [Produto]
         produto(id: ID!): Produto
+        enderecos: [Endereco]
     }
 
     type Mutation {
@@ -41,6 +56,18 @@ const typeDefs = gql`
             cpf: String!,
             dataDeNascimento: String!
         ): Cliente,
+
+        createEndereco(
+            clienteId: Int!
+            rua: String!
+            bairro: String!
+            cidade: String!
+            estado: String!
+            pais: String!
+            cep: Int!
+            numero: Int!
+            complemento: String
+        ): Endereco
 
         createProduto(
             nome: String!
@@ -62,6 +89,8 @@ const resolvers = {
         produtos: async () => await Produto.findAll(),
 
         produto: async (_, { id }) => await Produto.findByPk(id),
+
+        enderecos: async (_, { id }) => await Endereco.findAll(),
     },
 
     Mutation: {
@@ -73,6 +102,13 @@ const resolvers = {
         createProduto: async (_, { nome, imagem, descricao, peso, preco, quantidadeEmEstoque }) => {
             const produto = { nome, imagem, descricao, peso, preco, quantidadeEmEstoque}
             return await Produto.create(produto);
+        },
+
+        createEndereco: async (_, 
+            { clienteId, rua, bairro, cidade, estado, pais, cep, numero, complemento }
+        ) => {
+            const endereco = { clienteId, rua, bairro, cidade, estado, pais, cep, numero, complemento };
+            return await Endereco.create(endereco);
         }
     }
 };
