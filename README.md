@@ -34,5 +34,34 @@ yarn start
   
   -``` docker run -p 3003:3003 -d {nome_do_container}```
   
-  #
+ ## Documentação
+  
+  ### Mutations
+  - Cliente:
+    ```
+    createCliente(
+    id,
+    nomeCompleto!: "Nome_liente",
+    email!: "email_cliente",
+    cpf!: "cpf_cliente",
+    dataDeNascimento!: "dd/mm/yyyy",
+    ) {}
+    ```
+    -Endereço:
+    ```
+    createEndereco(
+      id,
+      clienteId!: INTERGER,
+      rua!: "rua_cliente",
+      bairro!: "bairro ",
+      cidade!: "Cidade",
+      estado!: "Estado",
+      pais!: "Pais",
+      cep!: 12345678,
+      numero!: 321,
+      complemento: "teste-comp" 
+    ) {}
+    ```
+  
+    
   
