@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../index')
+const sequelize = require('../../database/index');
+const Pedido = require('./Pedido');
+const ProdutosPedido = require('./ProdutosPedido');
 
 class Produto extends Model{}
 
@@ -10,7 +12,7 @@ Produto.init({
         autoIncrement: true,
         primaryKey: true,
     },
-    nome:{
+    nome: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -32,6 +34,7 @@ Produto.init({
     },
     quantidadeEmEstoque: {
         type: DataTypes.INTEGER,
+        allowNull: false
     }
 },
 {
@@ -40,4 +43,9 @@ Produto.init({
     underscored: true
 });
 
+// Produto.belongsToMany(Pedido, {
+//     through: ProdutosPedido,
+//     foreignKey: 'pedidoId',
+//     otherKey: 'produtoId'
+// })
 module.exports = Produto;

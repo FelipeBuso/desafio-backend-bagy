@@ -1,8 +1,11 @@
 const { gql, ApolloServer } = require('apollo-server');
+// const { where } = require('sequelize/dist');
 const sequelize = require('./database/index');
 const Cliente = require('./database/model/Cliente');
 const Endereco = require('./database/model/Endereco');
+const Pedido = require('./database/model/Pedido');
 const Produto = require('./database/model/Produto');
+const ProdutosPedido = require('./database/model/ProdutosPedido')
 
 sequelize.sync().then(() => console.log('db está pronto'))
 
@@ -41,6 +44,20 @@ const typeDefs = gql`
         quantidadeEmEstoque: Int!
     }
 
+    type Pedido {
+        id: ID!
+        clienteId: Int!
+        cliente: Cliente
+        produtosPedido: [ProdutosPedido]
+    }
+
+    type ProdutosPedido {
+        id: ID!
+        pedidoId: Int!
+        produtoId: Int!
+        quantidade: Int!
+        produto: [Produto!]!
+    }
 
     type Query {
         clientes: [Cliente]
@@ -48,6 +65,9 @@ const typeDefs = gql`
         produtos: [Produto]
         produto(id: ID!): Produto
         enderecos: [Endereco]
+        pedidos: [Pedido]
+        pedido(id: ID!): Pedido
+        produtosPedido(pedidoId: Int!): [ProdutosPedido]
     }
 
     type Mutation {
@@ -78,21 +98,63 @@ const typeDefs = gql`
             preco: Float!
             quantidadeEmEstoque: Int!
         ): Produto
+
+
+        createPedido(
+            clienteId: Int!
+        ): Pedido
+        
+        createProdutosPedido(
+            pedidoId: Int!
+            produtoId: Int!
+            quantidade: Int!
+        ): ProdutosPedido
     }
 `;
 
 const resolvers = {
     Query: {
-        clientes: async () => await Cliente.findAll(),
+        clientes: async () => await Cliente.findAll({
+            include: { model: Endereco, as: 'endereco' }
+        }),
 
         cliente: async (_, { id }) => await Cliente.findByPk(id, 
-            { include: {model: Endereco, as: 'endereco'} }),
+            { include: { model: Endereco, as: 'endereco' } }),
 
         produtos: async () => await Produto.findAll(),
 
         produto: async (_, { id }) => await Produto.findByPk(id),
 
-        enderecos: async (_, { id }) => await Endereco.findAll(),
+        enderecos: async () => await Endereco.findAll(),
+
+        produtosPedido: async (_, { pedidoId }) => await ProdutosPedido.findAll({
+            where: { pedidoId },
+            include: { 
+                model: Produto,
+                where: ProdutosPedido.produtoId = Produto.id
+            },
+        }),
+
+        pedidos: async () => await Pedido.findAll({
+            include: [
+                { model: Cliente, as: 'cliente'},
+            ]
+        }),
+
+        pedido: async (_, { id }) => await Pedido.findByPk(id, {
+            include: [
+                { 
+                    model: Cliente, as: 'cliente',
+                    include: { model: Endereco, as: 'endereco' }
+                },
+                { 
+                    model: ProdutosPedido,
+                    as: 'pedidos',
+                    where: { 'pedido_id': id },
+                    include: { model: Produto, as: 'produtos'}
+                }
+            ]
+        })
     },
 
     Mutation: {
@@ -111,7 +173,16 @@ const resolvers = {
         ) => {
             const endereco = { clienteId, rua, bairro, cidade, estado, pais, cep, numero, complemento };
             return await Endereco.create(endereco);
-        }
+        },
+
+        createPedido: async (_, { clienteId }) => {
+            return await Pedido.create({ clienteId });
+        },
+
+        createProdutosPedido: async (_, { pedidoId, produtoId, quantidade }) => {
+            const produtosPedido = { pedidoId, produtoId, quantidade };
+            return await ProdutosPedido.create(produtosPedido)
+        },
     }
 };
 

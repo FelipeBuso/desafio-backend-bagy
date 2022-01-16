@@ -1,7 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../../database/index')
-const Cliente = require('./Cliente');
-
 
 class Endereco extends Model{}
 
@@ -60,12 +58,5 @@ Endereco.init({
     timestamps: false,
     underscored: true    
 });
-
-// Endereco.belongsTo(Cliente);
-// Endereco.associations(
-//     Endereco.belongsTo(Cliente,
-//         { foreignKey: 'clienteId', as: 'cliente'}
-//     )
-// );
 
 module.exports = Endereco;

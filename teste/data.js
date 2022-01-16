@@ -35,4 +35,21 @@ const novoProduto = [
         quantidadeEmEstoque: 7, 
     }
 
+];
+
+const novoPedido = {
+    clienteId = 1,
+};
+
+const novoProdutosPedido = [
+    {
+        pedidoId: 1,
+        produtoId: 1,
+        quantidade: 1
+    },
+    {
+        pedidoId: 1,
+        produtoId: 2,
+        quantidade: 1
+    },
 ]

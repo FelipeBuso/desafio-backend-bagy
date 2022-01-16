@@ -38,4 +38,5 @@ Cliente.hasMany(Endereco, {
     foreignKey: 'clienteId',
     as: 'endereco'
 })
+
 module.exports = Cliente;
