@@ -37,7 +37,9 @@ yarn start
  ## Documentação
   
   ### Mutations
+  
   - Cliente:
+
     ```
     createCliente(
     id,
@@ -47,8 +49,10 @@ yarn start
     dataDeNascimento!: "dd/mm/yyyy",
     ) {}
     ```
-    -Endereço:
-    ```
+    
+   - Endereço:
+
+```
     createEndereco(
       id,
       clienteId!: INTERGER,
@@ -61,7 +65,52 @@ yarn start
       numero!: 321,
       complemento: "teste-comp" 
     ) {}
-    ```
+```
   
+  - Produto:
+  
+  ```
+    createProduto(
+      nome: "teste",
+      imagem:  "http://loja.com/api/cel.img",
+      descricao: "celular de teste",
+      peso: 0.68,
+      preco: 1100.99,
+      quantidadeEmEstoque: 10
+    ) {}, 
+ ```
     
-  
+   ### Query
+   
+    - Clientes:
+    
+```
+    clientes {
+       
+        endereco {
+         
+        }
+      }
+    }
+```
+    
+    - Cliente por Id:
+    
+```
+    cliente(id: $clienteId) {
+ 
+      endereco {
+ 
+    }
+  }
+```
+
+# Aprendizados
+- GraphQL com Apollo Server
+- SQLite
+
+## Melhorias a implementar
+- testes (Não consegui absorver testes com GraphQL
+- SQL - apronfundar conhecimentos para queries com mais níveis de profundidade
+
+## Api não está completamente funcional.
